@@ -20,3 +20,10 @@ C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\obj\Debug\net9.0\teste.sourcelink.j
 C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\obj\Debug\net9.0\teste.dll
 C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\obj\Debug\net9.0\refint\teste.dll
 C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\obj\Debug\net9.0\teste.pdb
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\bin\Debug\net9.0\teste.exe
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\bin\Debug\net9.0\teste.deps.json
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\bin\Debug\net9.0\teste.runtimeconfig.json
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\bin\Debug\net9.0\teste.dll
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\bin\Debug\net9.0\teste.pdb
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\obj\Debug\net9.0\teste.genruntimeconfig.cache
+C:\Users\SMN INGÁ - 03\Desktop\CRUD-Michael\obj\Debug\net9.0\ref\teste.dll

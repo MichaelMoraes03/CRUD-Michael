@@ -189,16 +189,16 @@ class Program
                 switch (Racaopcao)
                 {
                     case "1":
-                        especie = "Jiboia Arco-Íris do Cerrado";
+                        raca = "Jiboia Arco-Íris do Cerrado";
                         break;
                     case "2":
-                        especie = "Jiboia Arco-Íris do Norte";
+                        raca = "Jiboia Arco-Íris do Norte";
                         break;
                     case "3":
-                        especie = "Jiboia Arco-Íris da Caatinga";
+                        raca = "Jiboia Arco-Íris da Caatinga";
                         break;
                     case "4":
-                        especie = "Jiboia (BCC)";
+                        raca = "Jiboia (BCC)";
                         break;
 
                     default:
@@ -208,27 +208,53 @@ class Program
                 }
                 break;
         }
-        Console.Write("Digite o peso do seu PET em KG:");
+        Console.WriteLine("Digite o peso do seu PET em KG:");
         double peso;
         while (true)
         {
-            Console.Write("Por favor, insira um número double: ");
+            Console.WriteLine("Por favor, insira um número double: ");
             string entrada = Console.ReadLine();
 
             if (double.TryParse(entrada, out peso))
             {
                 Console.WriteLine($"Número inserido: {peso}");
-                break; // Sai do loop se a conversão for bem-sucedida
+                break; 
             }
             else
             {
                 Console.WriteLine("Entrada inválida. Por favor, insira um número válido.");
             }
-            string infoPet = $"Nome: {nome}, Espécie: {especie}, Raca: {raca}, Peso: {peso}KG";
-            pets.Add(proximoId, infoPet);
+            Pets novoPet = new Pets
+            {
+                Id = proximoId,
+                Nome = nome,
+                Especie = especie,
+                Raca = raca,
+                Peso = (int)peso,
+            };
+            pets.Add(proximoId, novoPet);
             Console.WriteLine($"Pet cadastrado com ID: {proximoId}");
             proximoId++;
         }
-        
+        static void Ler(Dictionary<int,Pets>pets)
+        {
+            Console.WriteLine("\n LISTA DE PETS CADASTRADOS ");
+            if (pets.Count == 0)
+            {
+                Console.WriteLine("Nenhum pet cadastrado.");
+                return;
+            }
+            foreach (var item in pets)
+            {
+                int id = item.Key;
+                Pets pet = item.Value;
+
+                Console.WriteLine($"ID: {id}");
+                Console.WriteLine($"Nome: {pet.Nome}");
+                Console.WriteLine($"Espécie: {pet.Especie}");
+                Console.WriteLine($"Raça: {pet.Raca}");
+                Console.WriteLine($"Peso: {pet.Peso} kg");
+            }
+        }
     }
 }
