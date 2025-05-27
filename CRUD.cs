@@ -1,229 +1,145 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-class Pets
+namespace VetSmartCRUD
 {
-    public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Especie { get; set; } 
-    public string Raca { get; set; }
-    public int Peso { get; set; }
-}
-class Program
-{
-
-    static void Main()
+    class Pets
     {
-        Dictionary<int, Pets> pets = new Dictionary<int, Pets>();
-        int proximoId = 1;
-        bool continuar = true;
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Especie { get; set; }
+        public string Raca { get; set; }
+        public int Peso { get; set; }
+        public char Sexo { get; set; }
+    }
 
-        //Menu de escolha do usuário
-        while (continuar)
+    class Program
+    {
+        static void Main()
         {
-            Console.WriteLine("\n MENU VET SMART");
-            Console.WriteLine("1. Adicionar Pets");
-            Console.WriteLine("2. Listar Pets");
-            Console.WriteLine("3. Atualizar Pets");
-            Console.WriteLine("4. Deletar Pets");
-            Console.WriteLine("5. Sair");
-            Console.Write("Escolha uma opção: ");
+            Dictionary<int, Pets> pets = new Dictionary<int, Pets>();
+            int proximoId = 1;
+            bool continuar = true;
 
+            while (continuar)
+            {
+                Console.WriteLine("\n MENU VET SMART");
+                Console.WriteLine("1. Adicionar Pets");
+                Console.WriteLine("2. Listar Pets");
+                Console.WriteLine("3. Atualizar Pets");
+                Console.WriteLine("4. Deletar Pets");
+                Console.WriteLine("5. Sair");
+                Console.Write("Escolha uma opção: ");
+
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+                    case "1":
+                        Criar(pets, ref proximoId);
+                        break;
+                    case "2":
+                        Ler(pets);
+                        break;
+                    case "3":
+                        Atualizar(pets);
+                        break;
+                    case "4":
+                        Excluir(pets);
+                        break;
+                    case "5":
+                        continuar = false;
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida.");
+                        break;
+                }
+            }
+        }
+
+        static string LerTextoValido(string mensagem)
+        {
+            while (true)
+            {
+                Console.Write(mensagem);
+                string entrada = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(entrada) && SomenteLetras(entrada))
+                    return entrada;
+                else
+                    Console.WriteLine("Entrada inválida. Digite apenas letras.");
+            }
+        }
+
+        static bool SomenteLetras(string texto)
+        {
+            foreach (char c in texto)
+            {
+                if (!char.IsLetter(c) && c != ' ')
+                    return false;
+            }
+            return true;
+        }
+
+        static void Criar(Dictionary<int, Pets> pets, ref int proximoId)
+        {
+            string nome = LerTextoValido("Digite o nome do seu Pet: ");
+
+            Console.Write("Digite o sexo do seu Pet (M/F): ");
+            char sexo = char.ToUpper(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+            if (sexo != 'M' && sexo != 'F')
+            {
+                Console.WriteLine("Sexo inválido. Por favor, insira 'M' ou 'F'.");
+                return;
+            }
+
+            Console.WriteLine("\n MENU DE ESPÉCIES");
+            Console.WriteLine("1. Cachorros");
+            Console.WriteLine("2. Gatos");
+            Console.WriteLine("3. Serpentes");
+            Console.Write("Escolha uma opção:  ");
+            string especie = "";
             string opcao = Console.ReadLine();
 
             switch (opcao)
             {
-                case "1":
-                    Criar(pets, ref proximoId);
-                    break;
-                case "2":
-                    Ler(pets);
-                    break;
-                case "3":
-                    Atualizar(pets);
-                    break;
-                case "4":
-                    Excluir(pets);
-                    break;
-                case "5":
-                    continuar = false;
-                    break;
+                case "1": especie = "Cachorros"; break;
+                case "2": especie = "Gatos"; break;
+                case "3": especie = "Serpentes"; break;
                 default:
-                    Console.WriteLine("Opção inválida.");
-                    break;
-
+                    Console.WriteLine("Tipo inválido. Refaça o cadastro.");
+                    return;
             }
-        }
-    }
-    //Menu de escolha do criar cadastro de Pets
-    static void Criar(Dictionary<int, Pets> pets, ref int proximoId)
-    {
-        Console.Write("Digite o nome do seu Pet: ");
-        string nome = Console.ReadLine();
 
-        Console.WriteLine("\n MENU DE ESPÉCIES");
-        Console.WriteLine("1. Cachorros");
-        Console.WriteLine("2. Gatos");
-        Console.WriteLine("3. Serpentes");
-        Console.Write("Escolha uma opção:  ");
-        string especie = "";
-        string opcao = Console.ReadLine();
+            Dictionary<string, string[]> racasPorEspecie = new Dictionary<string, string[]>
+            {
+                { "Cachorros", new [] { "Rottweiler", "Doberman", "Pitbull Terrier", "Pastor Alemão", "Dogo Argentino", "Dálmata", "Pinscher", "SRD" } },
+                { "Gatos", new [] { "Siamês", "Persa", "Sphynx", "Maine Coon", "Siberiano", "SRD" } },
+                {"Serpentes", new [] { "Jiboia Arco-Íris do Cerrado", "Jiboia Arco-Íris do Norte", "Jiboia Arco-Íris da Caatinga", "Jiboia (BCC)" } }
+            };
 
+            string[] racas = racasPorEspecie[especie];
+            for (int i = 0; i < racas.Length; i++)
+                Console.WriteLine($"{i + 1}. {racas[i]}");
+            Console.Write("Escolha uma opção de raça: ");
 
-
-        switch (opcao)
-        {
-            case "1":
-                especie = "Cachorros";
-
-                break;
-
-            case "2":
-                especie = "Gatos";
-
-                break;
-
-            case "3":
-                especie = "Serpentes";
-
-                break;
-
-            default:
-                Console.WriteLine("Tipo inválido. Refaça o cadastro.");
+            if (!int.TryParse(Console.ReadLine(), out int index) || index < 1 || index > racas.Length)
+            {
+                Console.WriteLine("Raça inválida. Refaça o cadastro.");
                 return;
-        }
-        Console.WriteLine("\n MENU DE RAÇAS CACHORROS");
-        Console.WriteLine("1. Rottweiler");
-        Console.WriteLine("2. Doberman");
-        Console.WriteLine("3. Pitbull Terrier");
-        Console.WriteLine("4. Pastor Alemão");
-        Console.WriteLine("5. Dogo Argentino");
-        Console.WriteLine("6. Dálmata");
-        Console.WriteLine("7. Pinscher");
-        Console.WriteLine("8. SRD");
-        Console.WriteLine("9. Escolha uma opção: ");
-
-        string raca = "";
-        string Racaopcao = Console.ReadLine();
-
-
-        switch (especie)
-        {
-            case "Cachorro":
-                switch (Racaopcao)
-                {
-                    case "1":
-                        raca = "Rottweiler";
-                        break;
-                    case "2":
-                        raca = "Doberman";
-                        break;
-                    case "3":
-                        raca = "Pitbull Terrier";
-                        break;
-                    case "4":
-                        raca = "Pastor Alemão";
-                        break;
-                    case "5":
-                        raca = "Dogo Argentino";
-                        break;
-                    case "6":
-                        raca = "Dálmata";
-                        break;
-                    case "7":
-                        raca = "Pinscher";
-                        break;
-                    case "8":
-                        raca = "SRD";
-                        break;
-
-                    default:
-                        Console.WriteLine("Tipo inválido. Refaça o cadastro.");
-                        return;
-                }
-                break;
-                Console.WriteLine("\n MENU DE RAÇAS GATOS");
-                Console.WriteLine("1. Siamês");
-                Console.WriteLine("2. Persa");
-                Console.WriteLine("3. Sphynx");
-                Console.WriteLine("4. Maine Coon");
-                Console.WriteLine("5. Siberiano");
-                Console.WriteLine("6. SRD");
-                Console.Write("7. Escolha uma opção: ");
-            case "Gatos":
-                switch (Racaopcao)
-                {
-                    case "1":
-                        raca = "Siamês";
-                        break;
-                    case "2":
-                        raca = "Persa";
-                        break;
-                    case "3":
-                        raca = "Sphynx";
-                        break;
-                    case "4":
-                        raca = "Maine Coon";
-                        break;
-                    case "5":
-                        raca = "Siberiano";
-                        break;
-                    case "6":
-                        raca = "SRD";
-                        break;
-
-                    default:
-                        Console.WriteLine("Tipo inválido. Refaça o cadastro.");
-                        return;
-                }
-                break;
-                Console.WriteLine("MENU DE ESPÉCIES SERPENTES");
-                Console.WriteLine("1. Jiboia Arco-Íris do Cerrado");
-                Console.WriteLine("2. Jiboia Arco-Íris do Norte");
-                Console.WriteLine("3. Jiboia Arco-Íris da Caatinga");
-                Console.WriteLine("4. Jiboia (BCC)");
-                Console.WriteLine("5. Escolha uma opção: ");
-
-            case "Serpentes":
-                switch (Racaopcao)
-                {
-                    case "1":
-                        raca = "Jiboia Arco-Íris do Cerrado";
-                        break;
-                    case "2":
-                        raca = "Jiboia Arco-Íris do Norte";
-                        break;
-                    case "3":
-                        raca = "Jiboia Arco-Íris da Caatinga";
-                        break;
-                    case "4":
-                        raca = "Jiboia (BCC)";
-                        break;
-
-                    default:
-                        Console.WriteLine("Tipo inválido. Refaça o cadastro.");
-                        return;
-
-                }
-                break;
-        }
-        Console.WriteLine("Digite o peso do seu PET em KG:");
-        double peso;
-        while (true)
-        {
-            Console.WriteLine("Por favor, insira um número double: ");
-            string entrada = Console.ReadLine();
-
-            if (double.TryParse(entrada, out peso))
-            {
-                Console.WriteLine($"Número inserido: {peso}");
-                break; 
             }
-            else
+            string raca = racas[index - 1];
+
+            double peso;
+            while (true)
             {
+                Console.Write("Digite o peso do seu PET em KG: ");
+                if (double.TryParse(Console.ReadLine(), out peso))
+                    break;
                 Console.WriteLine("Entrada inválida. Por favor, insira um número válido.");
             }
+
             Pets novoPet = new Pets
             {
                 Id = proximoId,
@@ -231,12 +147,14 @@ class Program
                 Especie = especie,
                 Raca = raca,
                 Peso = (int)peso,
+                Sexo = sexo
             };
             pets.Add(proximoId, novoPet);
             Console.WriteLine($"Pet cadastrado com ID: {proximoId}");
             proximoId++;
         }
-        static void Ler(Dictionary<int,Pets>pets)
+
+        static void Ler(Dictionary<int, Pets> pets)
         {
             Console.WriteLine("\n LISTA DE PETS CADASTRADOS ");
             if (pets.Count == 0)
@@ -254,6 +172,69 @@ class Program
                 Console.WriteLine($"Espécie: {pet.Especie}");
                 Console.WriteLine($"Raça: {pet.Raca}");
                 Console.WriteLine($"Peso: {pet.Peso} kg");
+                Console.WriteLine($"Sexo: {pet.Sexo}\n");
+            }
+        }
+
+        static void Atualizar(Dictionary<int, Pets> pets)
+        {
+            Console.Write("Digite o ID do pet que deseja atualizar: ");
+            if (int.TryParse(Console.ReadLine(), out int id) && pets.ContainsKey(id))
+            {
+                Pets pet = pets[id];
+                Console.WriteLine($"Atualizando Pet: {pet.Nome}");
+
+                Console.Write("Novo nome (deixe em branco para manter): ");
+                string novoNome = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(novoNome) && SomenteLetras(novoNome))
+                    pet.Nome = novoNome;
+
+                Console.Write("Novo peso (deixe em branco para manter): ");
+                string novoPesoStr = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(novoPesoStr) && double.TryParse(novoPesoStr, out double novoPeso))
+                    pet.Peso = (int)novoPeso;
+
+                Console.Write("Nova espécie (deixe em branco para manter): ");
+                string novaEspecie = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(novaEspecie) && SomenteLetras(novaEspecie))
+                    pet.Especie = novaEspecie;
+
+                Console.Write("Nova raça (deixe em branco para manter): ");
+                string novaRaca = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(novaRaca) && SomenteLetras(novaRaca))
+                    pet.Raca = novaRaca;
+
+                Console.Write("Novo sexo (M/F - deixe em branco para manter): ");
+                string novoSexoStr = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(novoSexoStr))
+                {
+                    char novoSexo = char.ToUpper(novoSexoStr[0]);
+                    if (novoSexo == 'M' || novoSexo == 'F')
+                        pet.Sexo = novoSexo;
+                    else
+                        Console.WriteLine("Sexo inválido. Deve ser 'M' ou 'F'.");
+                }
+
+                pets[id] = pet;
+                Console.WriteLine("Pet atualizado com sucesso.");
+            }
+            else
+            {
+                Console.WriteLine("Pet não encontrado.");
+            }
+        }
+
+        static void Excluir(Dictionary<int, Pets> pets)
+        {
+            Console.Write("Digite o ID do pet que deseja excluir: ");
+            if (int.TryParse(Console.ReadLine(), out int id) && pets.ContainsKey(id))
+            {
+                pets.Remove(id);
+                Console.WriteLine("Pet excluído com sucesso.");
+            }
+            else
+            {
+                Console.WriteLine("Pet não encontrado.");
             }
         }
     }
